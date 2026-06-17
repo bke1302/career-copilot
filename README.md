@@ -4,7 +4,7 @@ A **Retrieval-Augmented Generation (RAG)** system that matches hi-tech job listi
 
 Built as a hands-on learning project to master real Python, RAG pipelines, vector databases, and embeddings.
 
-> 🌐 **Live demo** (semantic search): _deploying — link coming soon_
+> 🌐 **[Live demo →](https://career-copilot-krjwhs72skkexmcuhlgrlm.streamlit.app/)** (semantic search)
 > The public demo runs Stages 1–2 (free, no API key). The full version adds Claude-powered resume tailoring (run locally).
 
 ---
