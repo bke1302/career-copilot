@@ -4,6 +4,9 @@ A **Retrieval-Augmented Generation (RAG)** system that matches hi-tech job listi
 
 Built as a hands-on learning project to master real Python, RAG pipelines, vector databases, and embeddings.
 
+> 🌐 **Live demo** (semantic search): _deploying — link coming soon_
+> The public demo runs Stages 1–2 (free, no API key). The full version adds Claude-powered resume tailoring (run locally).
+
 ---
 
 ## 🧠 What it does
@@ -37,6 +40,8 @@ Career-Copilot/
 ├── stage1_embed.py    # Stage 1: load jobs → embed → store in Chroma
 ├── stage2_search.py   # Stage 2: semantic search over the jobs
 ├── stage3_match.py    # Stage 3: rank fit + tailor resume with Claude
+├── app.py             # Full web UI (Streamlit) — search + Claude tailoring
+├── app_public.py      # Public demo web UI — semantic search only
 ├── requirements.txt   # Python dependencies
 └── README.md
 ```
