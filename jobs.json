@@ -1,0 +1,74 @@
+[
+  {
+    "id": "job-001",
+    "title": "AI Automation Engineer",
+    "company": "FlowTech",
+    "location": "תל אביב / היברידי",
+    "seniority": "Mid",
+    "description": "בניית אוטומציות חכמות ו-AI Agents לתהליכים עסקיים. עבודה עם n8n, LangChain ואינטגרציות API.",
+    "requirements": "ניסיון ב-low-code automation, הבנה ב-LLMs ו-prompt engineering, יכולת אינטגרציה בין מערכות, Python יתרון."
+  },
+  {
+    "id": "job-002",
+    "title": "Python Backend Developer",
+    "company": "DataNest",
+    "location": "הרצליה",
+    "seniority": "Junior-Mid",
+    "description": "פיתוח שירותי backend ב-Python, בניית REST APIs ועבודה מול בסיסי נתונים.",
+    "requirements": "Python, FastAPI/Flask, SQL, הבנה ב-REST. ניסיון 1-3 שנים."
+  },
+  {
+    "id": "job-003",
+    "title": "Machine Learning Engineer - RAG & LLMs",
+    "company": "VectorMind",
+    "location": "תל אביב",
+    "seniority": "Mid-Senior",
+    "description": "בניית מערכות RAG בפרודקשן: embeddings, vector databases, retrieval pipelines וגנרציה עם LLMs.",
+    "requirements": "Python מתקדם, LangChain/LlamaIndex, vector DBs (Pinecone/Chroma), embeddings, ניסיון ב-RAG."
+  },
+  {
+    "id": "job-004",
+    "title": "Operations Manager - Tech",
+    "company": "ScaleOps",
+    "location": "רמת גן",
+    "seniority": "Senior",
+    "description": "ניהול תפעול ושירות בארגון טכנולוגי, אופטימיזציה של תהליכים והובלת צוותים.",
+    "requirements": "10 שנות ניסיון בתפעול/שירות, ניהול צוותים, יתרון להבנה טכנולוגית ואוטומציות."
+  },
+  {
+    "id": "job-005",
+    "title": "AI Product Manager",
+    "company": "Cognautics",
+    "location": "תל אביב / היברידי",
+    "seniority": "Mid-Senior",
+    "description": "ניהול מוצר של פיצ'רים מבוססי AI, הגדרת roadmap ועבודה מול צוותי data ופיתוח.",
+    "requirements": "ניסיון בניהול מוצר, הבנה ב-AI/LLMs, יכולת לתרגם צרכים עסקיים למוצר. רקע טכני יתרון."
+  },
+  {
+    "id": "job-006",
+    "title": "Data Engineer",
+    "company": "PipelinePro",
+    "location": "באר שבע",
+    "seniority": "Mid",
+    "description": "בניית ותחזוקת data pipelines, ETL, ועבודה עם כלי עיבוד נתונים בענן.",
+    "requirements": "Python, SQL, Airflow, ניסיון בענן (AWS/GCP), עבודה עם נתונים בקנה מידה גדול."
+  },
+  {
+    "id": "job-007",
+    "title": "Solutions Engineer - AI Platforms",
+    "company": "IntegrateAI",
+    "location": "היברידי",
+    "seniority": "Mid",
+    "description": "ליווי לקוחות בהטמעת פתרונות AI, בניית POCs ואינטגרציות, גישור בין טכנולוגיה לעסק.",
+    "requirements": "יכולת טכנית + תקשורת מול לקוחות, הבנה ב-APIs ו-LLMs, רקע בתפעול/שירות יתרון משמעותי."
+  },
+  {
+    "id": "job-008",
+    "title": "Frontend Developer - React",
+    "company": "PixelForge",
+    "location": "תל אביב",
+    "seniority": "Mid",
+    "description": "פיתוח ממשקי משתמש מודרניים ב-React, עבודה עם design systems ו-APIs.",
+    "requirements": "React, TypeScript, CSS, ניסיון 2-4 שנים. אין דרישת Python."
+  }
+]

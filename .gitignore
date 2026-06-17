@@ -1,0 +1,19 @@
+# סודות — לעולם לא להעלות!
+api_key.txt
+.env
+
+# סביבה וירטואלית (כבדה, נבנית מחדש מ-requirements.txt)
+.venv/
+
+# מסד הנתונים הווקטורי (נבנה מחדש ע"י stage1_embed.py)
+chroma_db/
+
+# מטמון Python
+__pycache__/
+*.pyc
+
+# פלטים זמניים
+output.txt
+
+# נתונים אישיים (קו"ח) — להחליף ב-sample לתיק העבודות
+profile.txt
