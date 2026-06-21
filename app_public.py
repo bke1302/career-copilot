@@ -8,6 +8,7 @@ Career Copilot — דמו ציבורי (חיפוש סמנטי בלבד)
 
 import html
 import json
+import urllib.parse
 from pathlib import Path
 
 import streamlit as st
@@ -120,6 +121,13 @@ st.markdown(
     .bar > span {{ display:block; height:100%; border-radius:999px; }}
     .jc-body {{ color:#c8cedb; font-size:13.5px; line-height:1.6; margin-top:12px; border-top:1px solid #23272f; padding-top:12px; }}
     .jc-body b {{ color:{COL_TEXT}; font-weight:600; }}
+    .applybtn {{
+        display:inline-block; margin-top:14px; background:rgba(91,140,255,.12);
+        color:{COL_PRIMARY}; border:1px solid rgba(91,140,255,.35); border-radius:12px;
+        padding:9px 16px; font-size:13px; font-weight:600; text-decoration:none;
+        transition: background .18s ease, transform .18s ease;
+    }}
+    .applybtn:hover {{ background:rgba(91,140,255,.22); transform:translateY(-1px); }}
     .footer {{ text-align:center; color:{COL_MUTED}; font-size:12px; margin-top:30px; }}
     .footer a {{ color:{COL_PRIMARY}; text-decoration:none; }}
     </style>
@@ -159,6 +167,12 @@ if go and query.strip():
         pct = max(0.0, 1 - distance) * 100
         color, label = score_meta(pct)
         m = doc.metadata
+        # קישור פעיל: אם למשרה יש url אמיתי — משתמשים בו; אחרת חיפוש LinkedIn לפי התפקיד
+        if m.get("url"):
+            apply_url = m["url"]
+        else:
+            q = urllib.parse.quote(f"{m['title']} {m['company']}")
+            apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
         st.markdown(
             f"""
             <div class="jobcard">
@@ -177,6 +191,7 @@ if go and query.strip():
                     <b>תיאור:</b> {html.escape(m['description'])}<br>
                     <b>דרישות:</b> {html.escape(m['requirements'])}
                 </div>
+                <a class="applybtn" href="{html.escape(apply_url)}" target="_blank" rel="noopener">🔗 חפש את המשרה ב-LinkedIn ←</a>
             </div>
             """,
             unsafe_allow_html=True,
