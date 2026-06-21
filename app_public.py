@@ -55,6 +55,54 @@ def score_meta(pct: float) -> tuple[str, str]:
     return COL_WARNING, "התאמה חלקית"
 
 
+def render_results(results: list) -> None:
+    """מציג כרטיסי משרה מעוצבים לפי תוצאות החיפוש הסמנטי."""
+    st.markdown(
+        f"<div style='color:{COL_MUTED};font-size:13px;margin:18px 0 10px'>נמצאו {len(results)} משרות מדורגות לפי התאמה</div>",
+        unsafe_allow_html=True,
+    )
+    for doc, distance in results:
+        pct = max(0.0, 1 - distance) * 100
+        color, label = score_meta(pct)
+        m = doc.metadata
+        if m.get("url"):
+            apply_url = m["url"]
+        else:
+            q = urllib.parse.quote(f"{m['title']} {m['company']}")
+            apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
+        st.markdown(
+            f"""
+            <div class="jobcard">
+                <div class="jc-head">
+                    <div>
+                        <p class="jc-title">{html.escape(m['title'])}</p>
+                        <div class="jc-meta">🏢 {html.escape(m['company'])} &nbsp;·&nbsp; 📍 {html.escape(m['location'])} &nbsp;·&nbsp; {html.escape(m['seniority'])}</div>
+                    </div>
+                    <div class="scorebox">
+                        <div class="num" style="color:{color}">{pct:.0f}%</div>
+                        <div class="lbl">{label}</div>
+                    </div>
+                </div>
+                <div class="bar"><span style="width:{min(100,pct):.0f}%;background:{color}"></span></div>
+                <div class="jc-body">
+                    <b>תיאור:</b> {html.escape(m['description'])}<br>
+                    <b>דרישות:</b> {html.escape(m['requirements'])}
+                </div>
+                <a class="applybtn" href="{html.escape(apply_url)}" target="_blank" rel="noopener">🔗 חפש את המשרה ב-LinkedIn ←</a>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+
+def extract_pdf_text(file) -> str:
+    """מחלץ טקסט מקובץ PDF שהועלה."""
+    from pypdf import PdfReader
+
+    reader = PdfReader(file)
+    return "\n".join((p.extract_text() or "") for p in reader.pages)
+
+
 st.set_page_config(page_title="Career Copilot", page_icon="🎯", layout="centered")
 
 # ============================ עיצוב ============================
@@ -153,49 +201,38 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-query = st.text_input("מה אתה מחפש?", value="משרות AI ואוטומציה עם רקע בתפעול ושירות")
-top_k = st.slider("כמה תוצאות?", 1, 8, 4)
-go = st.button("🔍 חפש משרות")
+tab1, tab2 = st.tabs(["🔍 חיפוש חופשי", "📄 התאמה לפי קורות חיים"])
 
-if go and query.strip():
-    vectorstore = build_vectorstore()
-    results = vectorstore.similarity_search_with_score(query, k=top_k)
+with tab1:
+    query = st.text_input("מה אתה מחפש?", value="משרות AI ואוטומציה עם רקע בתפעול ושירות")
+    k1 = st.slider("כמה תוצאות?", 1, 8, 4, key="k1")
+    if st.button("🔍 חפש משרות", key="b1") and query.strip():
+        vs = build_vectorstore()
+        render_results(vs.similarity_search_with_score(query, k=k1))
 
-    st.markdown(f"<div style='color:{COL_MUTED};font-size:13px;margin:18px 0 10px'>נמצאו {len(results)} תוצאות מדורגות</div>", unsafe_allow_html=True)
-
-    for doc, distance in results:
-        pct = max(0.0, 1 - distance) * 100
-        color, label = score_meta(pct)
-        m = doc.metadata
-        # קישור פעיל: אם למשרה יש url אמיתי — משתמשים בו; אחרת חיפוש LinkedIn לפי התפקיד
-        if m.get("url"):
-            apply_url = m["url"]
+with tab2:
+    st.markdown(
+        f"<div style='color:{COL_MUTED};font-size:13px;margin-bottom:10px'>"
+        "הדבק את קורות החיים שלך או העלה PDF — והמערכת תדרג את המשרות לפי ההתאמה אליך."
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    uploaded = st.file_uploader("העלה קובץ PDF של קורות חיים", type=["pdf"])
+    cv_text = st.text_area("או הדבק את הטקסט של קורות החיים:", height=200,
+                           placeholder="שם, ניסיון תעסוקתי, כישורים, השכלה...")
+    k2 = st.slider("כמה תוצאות?", 1, 8, 4, key="k2")
+    if st.button("📄 התאם משרות לקורות החיים", key="b2"):
+        profile_text = ""
+        if uploaded is not None:
+            with st.spinner("קורא את ה-PDF..."):
+                profile_text = extract_pdf_text(uploaded)
+        elif cv_text.strip():
+            profile_text = cv_text
+        if not profile_text.strip():
+            st.warning("נא להעלות קובץ PDF או להדביק טקסט של קורות חיים.")
         else:
-            q = urllib.parse.quote(f"{m['title']} {m['company']}")
-            apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
-        st.markdown(
-            f"""
-            <div class="jobcard">
-                <div class="jc-head">
-                    <div>
-                        <p class="jc-title">{html.escape(m['title'])}</p>
-                        <div class="jc-meta">🏢 {html.escape(m['company'])} &nbsp;·&nbsp; 📍 {html.escape(m['location'])} &nbsp;·&nbsp; {html.escape(m['seniority'])}</div>
-                    </div>
-                    <div class="scorebox">
-                        <div class="num" style="color:{color}">{pct:.0f}%</div>
-                        <div class="lbl">{label}</div>
-                    </div>
-                </div>
-                <div class="bar"><span style="width:{min(100,pct):.0f}%;background:{color}"></span></div>
-                <div class="jc-body">
-                    <b>תיאור:</b> {html.escape(m['description'])}<br>
-                    <b>דרישות:</b> {html.escape(m['requirements'])}
-                </div>
-                <a class="applybtn" href="{html.escape(apply_url)}" target="_blank" rel="noopener">🔗 חפש את המשרה ב-LinkedIn ←</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+            vs = build_vectorstore()
+            render_results(vs.similarity_search_with_score(profile_text, k=k2))
 
 st.markdown(
     '<div class="footer">נבנה כפרויקט RAG · <a href="https://github.com/bke1302/career-copilot" target="_blank">קוד מקור ב-GitHub</a></div>',
